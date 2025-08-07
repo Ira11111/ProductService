@@ -2,6 +2,10 @@ github.com/BurntSushi/toml v1.2.1 h1:9F2/+DoOYIOksmaJFPw1tGFy1eDnIJXg+UHjuD8lTak
 github.com/BurntSushi/toml v1.2.1/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
 github.com/BurntSushi/toml v1.3.2 h1:o7IhLm0Msx3BaB+n3Ag7L8EVlByGnpq14C4YWiu/gL8=
 github.com/BurntSushi/toml v1.3.2/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
+github.com/Ira11111/go-interceptors v1.5.0 h1:nBa21M3YGqiloveRsscsQlaDY85bz2RkjtiD/Bt0b88=
+github.com/Ira11111/go-interceptors v1.5.0/go.mod h1:/Nb2SMNP07iWr5m/+Pee/+2WllUNKC+AZG2PRg3PxFg=
+github.com/Ira11111/go-interceptors v1.5.1 h1:eCyg8LnjwYmHNJdYbGkb/P5xn06G34oBONZ1LBg/7f0=
+github.com/Ira11111/go-interceptors v1.5.1/go.mod h1:/Nb2SMNP07iWr5m/+Pee/+2WllUNKC+AZG2PRg3PxFg=
 github.com/Ira11111/protos v1.0.0 h1:SAtJIOVXFVQjAO7pVcLA6/QFODEKW/jSgeGVri52hAg=
 github.com/Ira11111/protos v1.0.0/go.mod h1:qljpSXAg2bly3JPlOBzrGJ6bhv8aj6blSU0c706lQc8=
 github.com/Ira11111/protos/v4 v4.4.1 h1:67eRrIBkCQGtoJ5TzlNmyXGhHta0it+OqoeKu2o/fmA=
@@ -34,6 +38,8 @@ github.com/go-playground/validator/v10 v10.20.0 h1:K9ISHbSaI0lyB2eWMPJo+kOS/FBEx
 github.com/go-playground/validator/v10 v10.20.0/go.mod h1:dbuPbCMFw/DrkbEynArYaCwl3amGuJotoKCe95atGMM=
 github.com/goccy/go-json v0.10.2 h1:CrxCmQqYDkv1z7lO7Wbh2HN93uovUHgrECaO5ZrCXAU=
 github.com/goccy/go-json v0.10.2/go.mod h1:6MelG93GURQebXPDq3khkgXZkazVtN9CRI+MGFi0w8I=
+github.com/golang-jwt/jwt/v5 v5.3.0 h1:pv4AsKCKKZuqlgs5sUmn4x8UlGa0kEVt/puTpKx9vvo=
+github.com/golang-jwt/jwt/v5 v5.3.0/go.mod h1:fxCRLWMO43lRc8nhHWY6LGqRcf+1gQWArsqaEUEa5bE=
 github.com/google/gofuzz v1.0.0/go.mod h1:dBl0BpW6vV/+mYPU4Po3pmUjxk6FQPldtuIdl/M65Eg=
 github.com/google/uuid v1.5.0 h1:1p67kYwdtXjb0gL0BPiP1Av9wiZPo5A8z2cWkTZ+eyU=
 github.com/google/uuid v1.5.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=

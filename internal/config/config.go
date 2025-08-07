@@ -10,7 +10,7 @@ import (
 type Config struct {
 	Env    string       `yaml:"env"`
 	DB     DBConfig     `yaml:"db"`
-	Server ServerConfig `yaml:"http"`
+	Server ServerConfig `yaml:"handlers"`
 }
 
 type DBConfig struct {

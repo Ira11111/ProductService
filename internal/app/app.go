@@ -3,7 +3,7 @@ package app
 import (
 	http "github.com/Ira11111/ProductService/internal/app/http"
 	"github.com/Ira11111/ProductService/internal/config"
-	server "github.com/Ira11111/ProductService/internal/http/products"
+	server "github.com/Ira11111/ProductService/internal/handlers/products"
 	"github.com/Ira11111/ProductService/internal/service"
 	c "github.com/Ira11111/ProductService/internal/service/categories"
 	p "github.com/Ira11111/ProductService/internal/service/products"

@@ -3,10 +3,12 @@ package http
 import (
 	"context"
 	"errors"
-	"github.com/Ira11111/ProductService/internal/http/products"
+	"github.com/Ira11111/ProductService/internal/handlers/products"
+	m "github.com/Ira11111/go-interceptors/midlewares/gin"
 	api "github.com/Ira11111/protos/v4/gen/go/products"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -19,7 +21,20 @@ type HTTPApp struct {
 
 func NewHTTPApp(server *products.ServerAPI, port string, readTimeout time.Duration, writeTimeout time.Duration) *HTTPApp {
 	engine := gin.New()
-	api.RegisterHandlers(engine, server)
+	key := os.Getenv("JWT_PUBLIC_KEY")
+	if key == "" {
+		panic("jwt public key not found")
+	}
+	midlleware := m.NewAuthMiddleware(key)
+	api.RegisterHandlersWithOptions(
+		engine,
+		server,
+		api.GinServerOptions{
+			Middlewares: []api.MiddlewareFunc{
+				api.MiddlewareFunc(midlleware.JWTClaims()),
+			},
+		},
+	)
 
 	httpServer := &http.Server{
 		Addr:         ":" + port,
