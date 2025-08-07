@@ -10,7 +10,7 @@ import (
 type Config struct {
 	Env    string       `yaml:"env"`
 	DB     DBConfig     `yaml:"db"`
-	Server ServerConfig `yaml:"handlers"`
+	Server ServerConfig `yaml:"http"`
 }
 
 type DBConfig struct {
@@ -23,7 +23,6 @@ type DBConfig struct {
 }
 
 type ServerConfig struct {
-	Host         string        `yaml:"host"`
 	Port         string        `yaml:"port"`
 	Handler      string        `yaml:"handler"`
 	IdleTimeout  time.Duration `yaml:"idle_timeout"`

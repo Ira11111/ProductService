@@ -1,4 +1,4 @@
-package sellers
+package service
 
 import "log/slog"
 

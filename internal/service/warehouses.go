@@ -1,4 +1,4 @@
-package warehouses
+package service
 
 import "log/slog"
 

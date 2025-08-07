@@ -32,7 +32,13 @@ func main() {
 	signal.Notify(stopChan, syscall.SIGINT, syscall.SIGTERM)
 
 	logger.Info("start application")
-	go app.HttpServer.Start()
+	go func() {
+		logger.Info("start server on port", slog.String("port", cfg.Server.Port))
+		err := app.HttpServer.Start()
+		if err != nil {
+			panic(err)
+		}
+	}()
 
 	<-stopChan
 	log.Println("Shutting down server...")

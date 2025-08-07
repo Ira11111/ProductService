@@ -7,7 +7,7 @@ db:
   database: product_service_db
   ssl_mode: disable
 http:
-  port: 8080
+  port: "8080"
   handler: router
   read_timeout: 10s
   write_timeout: 30s

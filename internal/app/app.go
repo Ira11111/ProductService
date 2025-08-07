@@ -1,14 +1,10 @@
 package app
 
 import (
-	http "github.com/Ira11111/ProductService/internal/app/http"
+	h "github.com/Ira11111/ProductService/internal/app/http"
 	"github.com/Ira11111/ProductService/internal/config"
 	server "github.com/Ira11111/ProductService/internal/handlers/products"
-	"github.com/Ira11111/ProductService/internal/service"
-	c "github.com/Ira11111/ProductService/internal/service/categories"
-	p "github.com/Ira11111/ProductService/internal/service/products"
-	s "github.com/Ira11111/ProductService/internal/service/sellers"
-	w "github.com/Ira11111/ProductService/internal/service/warehouses"
+	s "github.com/Ira11111/ProductService/internal/service"
 	storage "github.com/Ira11111/ProductService/internal/storage/postgres"
 	"log/slog"
 	"time"
@@ -16,8 +12,8 @@ import (
 
 type App struct {
 	logger         *slog.Logger
-	HttpServer     *http.HTTPApp
-	ProductService *service.ServiceAPI
+	HttpServer     *h.HTTPApp
+	ProductService *s.ServiceAPI
 }
 
 func NewApp(logger *slog.Logger, dbCfg *config.DBConfig, port string, readTimeout time.Duration, writeTimeout time.Duration) *App {
@@ -26,16 +22,16 @@ func NewApp(logger *slog.Logger, dbCfg *config.DBConfig, port string, readTimeou
 		panic(err)
 	}
 
-	productService := p.NewProductService(logger, st)
+	productService := s.NewProductService(logger, st)
 	sellerService := s.NewSellerService(logger, st)
-	categoryService := c.NewCategoryService(logger, st)
-	warehouseService := w.NewWarehouseService(logger, st)
+	categoryService := s.NewCategoryService(logger, st)
+	warehouseService := s.NewWarehouseService(logger, st)
 
-	serviceApi := service.NewService(productService, sellerService, warehouseService, categoryService)
+	serviceApi := s.NewService(productService, sellerService, warehouseService, categoryService)
 
 	serverApi := server.NewServerAPI(serviceApi)
 
-	httpApp := http.NewHTTPApp(serverApi, port, readTimeout, writeTimeout)
+	httpApp := h.NewHTTPApp(serverApi, port, readTimeout, writeTimeout)
 
 	return &App{
 		logger:         logger,

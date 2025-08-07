@@ -20,7 +20,8 @@ type HTTPApp struct {
 }
 
 func NewHTTPApp(server *products.ServerAPI, port string, readTimeout time.Duration, writeTimeout time.Duration) *HTTPApp {
-	engine := gin.New()
+	engine := gin.Default()
+	engine.Use(gin.Logger())
 	key := os.Getenv("JWT_PUBLIC_KEY")
 	if key == "" {
 		panic("jwt public key not found")
@@ -52,7 +53,7 @@ func NewHTTPApp(server *products.ServerAPI, port string, readTimeout time.Durati
 
 func (app *HTTPApp) Start() error {
 	if err := app.httpServer.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-		panic(err)
+		return err
 	}
 	return nil
 }
