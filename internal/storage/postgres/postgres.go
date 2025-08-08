@@ -4,7 +4,15 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/Ira11111/ProductService/internal/config"
+	"github.com/lib/pq"
 	_ "github.com/lib/pq"
+)
+
+const (
+	ErrUniqueViolation     pq.ErrorCode = "23505"
+	ErrForeignKeyViolation pq.ErrorCode = "23503"
+	ErrInvalidFormat       pq.ErrorCode = "22P02"
+	//ErrNotNullViolation    pq.ErrorCode = "23502"
 )
 
 type Storage struct {

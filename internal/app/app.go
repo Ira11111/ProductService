@@ -22,15 +22,8 @@ func NewApp(logger *slog.Logger, dbCfg *config.DBConfig, port string, readTimeou
 		panic(err)
 	}
 
-	productService := s.NewProductService(logger, st)
-	sellerService := s.NewSellerService(logger, st)
-	categoryService := s.NewCategoryService(logger, st)
-	warehouseService := s.NewWarehouseService(logger, st)
-
-	serviceApi := s.NewService(productService, sellerService, warehouseService, categoryService)
-
+	serviceApi := s.NewService(logger, st)
 	serverApi := server.NewServerAPI(serviceApi)
-
 	httpApp := h.NewHTTPApp(serverApi, port, readTimeout, writeTimeout)
 
 	return &App{
