@@ -1,6 +1,11 @@
 package service
 
-import "log/slog"
+import (
+	"log/slog"
+
+	api "github.com/Ira11111/protos/v4/gen/go/products"
+	"github.com/gin-gonic/gin"
+)
 
 type WarehouseProvider interface {
 }
@@ -14,4 +19,11 @@ func NewWarehouseService(logger *slog.Logger, provider WarehouseProvider) *Wareh
 		logger:   logger,
 		provider: provider,
 	}
+}
+
+func (s *ServiceAPI) Warehouse(c *gin.Context, id int64) (*api.Warehouse, error) {
+	return nil, nil
+}
+func (s *ServiceAPI) CreateWarehouse(c *gin.Context, warehouse *api.Warehouse) (*api.Warehouse, error) {
+	return nil, nil
 }

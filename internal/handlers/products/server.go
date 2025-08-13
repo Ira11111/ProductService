@@ -15,15 +15,29 @@ const (
 )
 
 type ProductService interface {
-	Products(c *gin.Context, offset int64, limit int64) ([]*api.ProductResponse, error)
 	CreateProduct(c *gin.Context, product *api.ProductCreate) (*api.ProductResponse, error)
 	Product(c *gin.Context, id int64) (*api.ProductResponse, error)
-	DeleteProduct(c *gin.Context, productId int64, sellerId int64) error
+	DeleteProduct(c *gin.Context, productId int64) error
+	EditProduct(c *gin.Context, create *api.ProductCreate) (*api.ProductResponse, error)
 }
 
-type SellerService interface{}
+type ProductListService interface {
+	Products(c *gin.Context, offset int64, limit int64) ([]*api.ProductResponse, error)
+	ProductsCategory(c *gin.Context, id int64, offset int64, limit int64) (*[]api.ProductResponse, error)
+	ProductsWarehouse(c gin.Context, id int64, offset int64, limit int64) (*api.ProductResponse, error)
+}
 
-type WarehouseService interface{}
+type SellerService interface {
+	CreateSeller(c *gin.Context, seller *api.SellerFull) (*api.SellerFull, error)
+	Seller(c *gin.Context, id int64) (*api.SellerFull, error)
+	DeleteSeller(c *gin.Context, id int64) error
+	EditSeller(c *gin.Context, full *api.SellerFull) (*api.SellerFull, error)
+}
+
+type WarehouseService interface {
+	Warehouse(c *gin.Context, id int64) (*api.Warehouse, error)
+	CreateWarehouse(c *gin.Context, warehouse *api.Warehouse) (*api.Warehouse, error)
+}
 
 type CategoriesService interface {
 	Categories(c *gin.Context) ([]*api.Category, error)
@@ -81,6 +95,10 @@ func (s *ServerAPI) DeleteCategoriesId(c *gin.Context, id api.IdParam) {
 	c.JSON(http.StatusNoContent, gin.H{"message": "category deleted"})
 }
 
+func (s *ServerAPI) GetCategoriesIdProducts(c *gin.Context, id api.IdParam, params api.GetCategoriesIdProductsParams) {
+	return
+}
+
 func (s *ServerAPI) GetProducts(c *gin.Context, params api.GetProductsParams) {
 	var lim int64
 	var off int64
@@ -131,15 +149,43 @@ func (s *ServerAPI) PostProducts(c *gin.Context) {
 			return
 		}
 	}
-	c.JSON(http.StatusOK, respProducts)
+	c.JSON(http.StatusCreated, respProducts)
 	return
 }
 
-func (s *ServerAPI) DeleteProductsId(c *gin.Context, id api.IdParam) {}
+func (s *ServerAPI) DeleteProductsId(c *gin.Context, id api.IdParam) {
+	err := s.serviceApi.DeleteProduct(c, id)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
+		return
+	}
+	c.JSON(http.StatusNoContent, gin.H{"message": "product deleted successful"})
+	return
+}
 
-func (s *ServerAPI) GetProductsId(c *gin.Context, id api.IdParam) {}
+func (s *ServerAPI) GetProductsId(c *gin.Context, id api.IdParam) {
+	product, err := s.serviceApi.Product(c, id)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"product": product})
+}
 
-func (s *ServerAPI) PutProductsId(c *gin.Context, id api.IdParam) {}
+func (s *ServerAPI) PutProductsId(c *gin.Context, id api.IdParam) {
+	var editedProduct api.ProductCreate
+	if err := c.ShouldBindJSON(&editedProduct); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
+		return
+	}
+	product, err := s.serviceApi.EditProduct(c, &editedProduct)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"product": product})
+
+}
 
 func (s *ServerAPI) PostSellers(c *gin.Context) {}
 
@@ -151,7 +197,8 @@ func (s *ServerAPI) PutSellersId(c *gin.Context, id api.IdParam) {}
 
 func (s *ServerAPI) PostWarehouse(c *gin.Context) {}
 
-func (s *ServerAPI) PostWarehouseIdProducts(c *gin.Context, id api.IdParam, params api.PostWarehouseIdProductsParams) {
+func (s *ServerAPI) GetWarehouseIdProducts(c *gin.Context, id api.IdParam, params api.GetWarehouseIdProductsParams) {
+
 }
 
 func (s *ServerAPI) GetWarehousesId(c *gin.Context, id api.IdParam) {}

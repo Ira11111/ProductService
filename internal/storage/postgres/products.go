@@ -11,6 +11,8 @@ import (
 	"github.com/lib/pq"
 )
 
+//TODO: вынести в отельную функцию создание списка продуктов
+
 func (s *Storage) Products(c *gin.Context, offset int64, limit int64) ([]*api.ProductResponse, error) {
 	res := make([]*api.ProductResponse, 0, limit)
 	fmt.Println(limit, offset)
@@ -114,8 +116,22 @@ func (s *Storage) SaveProduct(c *gin.Context, product *api.ProductCreate, userId
 	return &newProduct, nil
 }
 func (s *Storage) Product(c *gin.Context, id int64) (*api.ProductResponse, error) {
+	//тут просто находим
 	return nil, nil
 }
 func (s *Storage) DeleteProduct(c *gin.Context, id int64) error {
+	// тут просто удаляем
 	return nil
+}
+
+func (s *Storage) UpdateProduct(c *gin.Context, create *api.ProductCreate) (*api.ProductCreate, error) {
+	// тут просто обновляем
+	return nil, nil
+}
+
+func (s *Storage) ProductsByCategory(c *gin.Context, id int64, offset int64, limit int64) (*[]api.ProductResponse, error) {
+	return nil, nil
+}
+func (s *Storage) ProductsByWarehouse(c gin.Context, id int64, offset int64, limit int64) (*api.ProductResponse, error) {
+	return nil, nil
 }

@@ -9,10 +9,16 @@ import (
 )
 
 type ProductProvider interface {
-	Products(c *gin.Context, offset int64, limit int64) ([]*api.ProductResponse, error)
 	SaveProduct(c *gin.Context, product *api.ProductCreate, userId int64) (*api.ProductResponse, error)
 	Product(c *gin.Context, id int64) (*api.ProductResponse, error)
 	DeleteProduct(c *gin.Context, id int64) error
+	UpdateProduct(c *gin.Context, create *api.ProductCreate) (*api.ProductCreate, error)
+}
+
+type ProductListProvider interface {
+	Products(c *gin.Context, offset int64, limit int64) ([]*api.ProductResponse, error)
+	ProductsByCategory(c *gin.Context, id int64, offset int64, limit int64) (*[]api.ProductResponse, error)
+	ProductsByWarehouse(c gin.Context, id int64, offset int64, limit int64) (*api.ProductResponse, error)
 }
 
 func (s *ServiceAPI) Products(c *gin.Context, offset int64, limit int64) ([]*api.ProductResponse, error) {
@@ -59,6 +65,25 @@ func (s *ServiceAPI) CreateProduct(c *gin.Context, product *api.ProductCreate) (
 func (s *ServiceAPI) Product(c *gin.Context, id int64) (*api.ProductResponse, error) {
 	return nil, nil
 }
-func (s *ServiceAPI) DeleteProduct(c *gin.Context, productId int64, sellerId int64) error {
+func (s *ServiceAPI) DeleteProduct(c *gin.Context, productId int64) error {
+	//1. проверить админа и роль продавца
+	// если админ то все ок
+	// надо булеть по id пользователя проверить что он продавец этого товара(скорее всего клиент для grpc)
 	return nil
+}
+
+func (s *ServiceAPI) EditProduct(c *gin.Context, create *api.ProductCreate) (*api.ProductResponse, error) {
+	//1. проверить админа и роль продавца
+	// если админ то все ок
+	// надо булеть по id пользователя проверить что он продавец этого товара и ему нельзя менять продавца
+	// для этого создать функцию IsUserSeller service
+	// в storage функция котрая находит продавца по id
+	return nil, nil
+}
+
+func (s *ServiceAPI) ProductsCategory(c *gin.Context, id int64, offset int64, limit int64) (*[]api.ProductResponse, error) {
+	return nil, nil
+}
+func (s *ServiceAPI) ProductsWarehouse(c gin.Context, id int64, offset int64, limit int64) (*api.ProductResponse, error) {
+	return nil, nil
 }

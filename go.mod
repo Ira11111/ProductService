@@ -4,7 +4,7 @@ go 1.23.0
 
 require (
 	github.com/Ira11111/go-interceptors v1.5.2
-	github.com/Ira11111/protos/v4 v4.4.6
+	github.com/Ira11111/protos/v4 v4.4.7
 	github.com/gin-gonic/gin v1.10.1
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/jackc/pgx/v4 v4.18.3
