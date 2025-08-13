@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/Ira11111/ProductService/internal/config"
+	_ "github.com/jackc/pgx/v4/stdlib" // Вот правильный импорт для database/sql
 	"github.com/lib/pq"
-	_ "github.com/lib/pq"
 )
 
 const (
@@ -21,18 +21,14 @@ type Storage struct {
 
 func NewStorage(dbCfg *config.DBConfig) (*Storage, error) {
 	const op = "storage.NewStorage"
+	db, err := sql.Open("pgx", fmt.Sprintf("postgres://%s:%s@%s:%d/%s",
+		dbCfg.User,
+		dbCfg.Pass,
+		dbCfg.Host,
+		dbCfg.Port,
+		dbCfg.Name,
+	))
 
-	db, err := sql.Open(
-		"postgres",
-		fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
-			dbCfg.Host,
-			dbCfg.Port,
-			dbCfg.User,
-			dbCfg.Pass,
-			dbCfg.Name,
-			dbCfg.SSL,
-		),
-	)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
@@ -40,6 +36,5 @@ func NewStorage(dbCfg *config.DBConfig) (*Storage, error) {
 	if err := db.Ping(); err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
-
 	return &Storage{db: db}, nil
 }

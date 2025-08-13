@@ -2,14 +2,20 @@ package products
 
 import (
 	"errors"
+	"net/http"
+
 	"github.com/Ira11111/ProductService/internal/service"
 	api "github.com/Ira11111/protos/v4/gen/go/products"
 	"github.com/gin-gonic/gin"
-	"net/http"
+)
+
+const (
+	defaultLimit  = 10
+	defaultOffset = 0
 )
 
 type ProductService interface {
-	Products(c *gin.Context, offset int64, limit int64) (*api.ProductResponse, error)
+	Products(c *gin.Context, offset int64, limit int64) ([]*api.ProductResponse, error)
 	CreateProduct(c *gin.Context, product *api.ProductCreate) (*api.ProductResponse, error)
 	Product(c *gin.Context, id int64) (*api.ProductResponse, error)
 	DeleteProduct(c *gin.Context, productId int64, sellerId int64) error
@@ -75,7 +81,26 @@ func (s *ServerAPI) DeleteCategoriesId(c *gin.Context, id api.IdParam) {
 	c.JSON(http.StatusNoContent, gin.H{"message": "category deleted"})
 }
 
-func (s *ServerAPI) GetProducts(c *gin.Context, params api.GetProductsParams) {}
+func (s *ServerAPI) GetProducts(c *gin.Context, params api.GetProductsParams) {
+	var lim int64
+	var off int64
+	if params.Limit == nil {
+		lim = defaultLimit
+	} else {
+		lim = *params.Limit
+	}
+	if params.Offset == nil {
+		off = defaultOffset
+	} else {
+		off = *params.Offset
+	}
+	products, err := s.serviceApi.Products(c, off, lim)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"offset": off, "amount": lim, "products": products})
+}
 
 func (s *ServerAPI) PostProducts(c *gin.Context) {
 	//TODO: обработка и сохранение фотографий

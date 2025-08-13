@@ -9,4 +9,5 @@ var (
 	ErrFailedStartTransaction = errors.New("failed to start transaction")
 	ErrFailedToSaveEntity     = errors.New("failed to save entity")
 	ErrCommitFailed           = errors.New("failed to commit")
+	ErrInvalidQuery           = errors.New("invalid DB query")
 )
